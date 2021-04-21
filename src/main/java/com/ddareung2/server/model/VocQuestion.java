@@ -14,11 +14,13 @@ import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
 @Entity(name="voc_question")
-public class VocQuestion {
+public class VocQuestion extends BaseTimeEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +48,6 @@ public class VocQuestion {
 	
 	@Column(name = "need_reply", nullable = false, updatable = true, insertable = true)
 	private int needReply;
-	@Column(name = "create_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private LocalDateTime createAt;
 	
 	public VocQuestion() {}
 
@@ -61,6 +61,5 @@ public class VocQuestion {
 		this.email = email;
 		this.stationId = stationId;
 		this.needReply = needReply;
-		this.createAt = createAt;
 	}
 }
