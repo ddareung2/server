@@ -35,7 +35,7 @@ public class AdminItem extends BaseTimeEntity {
 	
 	@OneToOne(targetEntity = AdminRoleItem.class)
 	@JoinColumn(name="role", referencedColumnName = "name", nullable = false, updatable = true, insertable = true)
-	private String role;
+	private AdminRoleItem role;
 	
 	@Column(name = "modified_at", nullable = false, updatable = true, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime modifiedAt;
@@ -45,7 +45,7 @@ public class AdminItem extends BaseTimeEntity {
 	public AdminItem() {}
 	
 	@Builder
-	public AdminItem(String userName, String name, String password, String role, LocalDateTime createAt,
+	public AdminItem(String userName, String name, String password, AdminRoleItem role, LocalDateTime createAt,
 			LocalDateTime modifiedAt, int status) {
 		this.userName = userName;
 		this.name = name;
