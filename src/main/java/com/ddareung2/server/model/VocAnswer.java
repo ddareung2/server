@@ -29,19 +29,19 @@ public class VocAnswer extends BaseTimeEntity {
 	
 	@OneToOne(fetch = FetchType.LAZY, targetEntity = VocQuestion.class)
 	@JoinColumn(name="question_id", referencedColumnName = "id", nullable = false, updatable = true, insertable = true)
-	private int questionId;
+	private VocQuestion questionId;
 	
 	@Column(name = "content", nullable = false, updatable = true, insertable = true)
 	private String content;
 	
 	@OneToOne(fetch = FetchType.LAZY, targetEntity = AdminItem.class)
 	@JoinColumn(name="admin_id", referencedColumnName = "id", nullable = false, updatable = true, insertable = true)
-	private String adminId;
+	private AdminItem adminId;
 	
 	public VocAnswer() {}
 
 	@Builder
-	public VocAnswer(int questionId, String content, String adminId, LocalDateTime createAt) {
+	public VocAnswer(VocQuestion questionId, String content, AdminItem adminId, LocalDateTime createAt) {
 		this.questionId = questionId;
 		this.content = content;
 		this.adminId = adminId;
