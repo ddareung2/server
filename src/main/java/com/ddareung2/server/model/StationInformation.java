@@ -28,15 +28,15 @@ public class StationInformation {
 	@Column(name = "longitude", nullable = false, updatable = true, insertable = true)
 	private Double longitude;
 	@Column(name = "total_rack_count", nullable = false, updatable = true, insertable = true)
-	private String totalRackCount;
+	private long totalRackCount;
 	@Column(name = "total_parking_bike_count", nullable = false, updatable = true, insertable = true)
-	private String totalParkingBikeCount;
+	private long totalParkingBikeCount;
 	
 	public StationInformation() {}
 
 	@Builder
 	public StationInformation(String stationId, String name, Double latitude, Double longitude,
-			String totalRackCount, String totalParkingBikeCount) {
+			long totalRackCount, long totalParkingBikeCount) {
 		this.stationId = stationId;
 		this.name = name;
 		this.latitude = latitude;
