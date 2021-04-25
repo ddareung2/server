@@ -1,7 +1,7 @@
 server:
   port: 8000
   servlet:
-    context-path: /ddareung2
+    context-path: /api
     encoding:
       charset: UTF-8
       enabled: true
