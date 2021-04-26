@@ -1,14 +1,14 @@
 package com.ddareung2.server.station;
 
-import com.ddareung2.server.model.StationInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import com.ddareung2.server.model.StationInformation;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,8 +18,14 @@ public class StationController {
     private final StationService stationService;
 
     @GetMapping()
-    public ResponseEntity<List<StationInformation>> getAllStations() {
+    public ResponseEntity<List<StationInformation>> getStations() {
         List<StationInformation> stations = stationService.findAll();
+        return new ResponseEntity<>(stations, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<Optional<List<StationInformation>>> searchStations(@RequestParam("name") String name) {
+        Optional<List<StationInformation>> stations = stationService.findByName(name);
         return new ResponseEntity<>(stations, HttpStatus.OK);
     }
 }

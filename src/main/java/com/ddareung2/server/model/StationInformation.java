@@ -6,12 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor
 @Entity(name="station_information")
 public class StationInformation {
 
@@ -19,24 +17,28 @@ public class StationInformation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, updatable = false, insertable = true)
 	private long id;
+
 	@Column(name = "station_id", nullable = false, updatable = true, insertable = true)
 	private String stationId;
+
 	@Column(name = "name", nullable = false, updatable = true, insertable = true)
 	private String name;
+
 	@Column(name = "latitude", nullable = false, updatable = true, insertable = true)
 	private Double latitude;
+
 	@Column(name = "longitude", nullable = false, updatable = true, insertable = true)
 	private Double longitude;
+
 	@Column(name = "total_rack_count", nullable = false, updatable = true, insertable = true)
-	private long totalRackCount;
+	private Integer totalRackCount;
+
 	@Column(name = "total_parking_bike_count", nullable = false, updatable = true, insertable = true)
-	private long totalParkingBikeCount;
-	
-	public StationInformation() {}
+	private Integer totalParkingBikeCount;
 
 	@Builder
 	public StationInformation(String stationId, String name, Double latitude, Double longitude,
-			long totalRackCount, long totalParkingBikeCount) {
+			Integer totalRackCount, Integer totalParkingBikeCount) {
 		this.stationId = stationId;
 		this.name = name;
 		this.latitude = latitude;
