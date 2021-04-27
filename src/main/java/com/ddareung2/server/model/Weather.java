@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Weather {
-    private final String ServiceKey = "6QhJt2TrTftbPuSc98xTzMCNmpgtgKzi4bpewt0SFwMKQJdbMD8A4AIxH0XWd8%2FTypTiB%2ByVA0TD19qtj8wB4A%3D%3D";
+    private final String serviceKey = "6QhJt2TrTftbPuSc98xTzMCNmpgtgKzi4bpewt0SFwMKQJdbMD8A4AIxH0XWd8%2FTypTiB%2ByVA0TD19qtj8wB4A%3D%3D";
     private final String dataType = "JSON";
     @NotEmpty
     private int nx;
