@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.ddareung2.server.admin.Admin;
 import com.ddareung2.server.model.BaseTimeEntity;
-import com.ddareung2.server.user.Admin;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

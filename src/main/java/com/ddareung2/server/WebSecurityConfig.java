@@ -9,8 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.ddareung2.server.user.AdminService;
+import com.ddareung2.server.admin.AdminService;
+import com.ddareung2.server.handler.AuthFailureHandler;
+import com.ddareung2.server.handler.AuthSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -30,8 +33,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().and()
             .formLogin()
                 .permitAll()
+                .successHandler(new AuthSuccessHandler())
+				.failureHandler(new AuthFailureHandler())
                 .and()
             .logout()
+	            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+	            .invalidateHttpSession(true)
                 .permitAll();
         http.csrf().disable(); 
     	http.headers()
