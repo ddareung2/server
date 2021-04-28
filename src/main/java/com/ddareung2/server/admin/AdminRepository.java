@@ -1,4 +1,4 @@
-package com.ddareung2.server.user;
+package com.ddareung2.server.admin;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

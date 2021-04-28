@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.user.Admin;
+import com.ddareung2.server.admin.Admin;
 
 @Service
 public class JpaTestService {
