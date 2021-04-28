@@ -1,4 +1,4 @@
-package com.ddareung2.server.model;
+package com.ddareung2.server.user;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.ddareung2.server.model.BaseTimeEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,33 +21,33 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
 @Entity(name="admin") 
-public class AdminItem extends BaseTimeEntity {
+public class Admin extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, updatable = false, insertable = false)
 	private long id;
 	
-	@Column(name = "username", nullable = false, updatable = true, insertable = true)
+	@Column(name = "username", nullable = false)
 	private String username;
-	@Column(name = "name", nullable = false, updatable = true, insertable = true)
+	@Column(name = "name", nullable = false)
 	private String name;
-	@Column(name = "password", nullable = false, updatable = true, insertable = true)
+	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@OneToOne(targetEntity = AdminRoleItem.class)
-	@JoinColumn(name="role", referencedColumnName = "name", nullable = false, updatable = true, insertable = true)
-	private AdminRoleItem role;
+	@OneToOne(targetEntity = AdminRole.class)
+	@JoinColumn(name="role", referencedColumnName = "name", nullable = false)
+	private AdminRole role;
 	
-	@Column(name = "modified_at", nullable = false, updatable = true, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "modified_at", nullable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime modifiedAt;
-	@Column(name = "status", nullable = false, updatable = true, insertable = false, columnDefinition = "INTEGER DEFAULT 1")
+	@Column(name = "status", nullable = false, insertable = false, columnDefinition = "INTEGER DEFAULT 1")
 	private int status;
 	
-	public AdminItem() {}
+	public Admin() {}
 	
 	@Builder
-	public AdminItem(String userName, String name, String password, AdminRoleItem role, LocalDateTime createAt,
+	public Admin(String userName, String name, String password, AdminRole role, LocalDateTime createAt,
 			LocalDateTime modifiedAt, int status) {
 		this.username = userName;
 		this.name = name;

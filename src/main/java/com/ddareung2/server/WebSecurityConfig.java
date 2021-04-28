@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.ddareung2.server.user.UserService;
+import com.ddareung2.server.user.AdminService;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 	
 	@Autowired
-	private UserService userService;
+	private AdminService adminService;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -48,6 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(adminService).passwordEncoder(passwordEncoder());
 	}
 }

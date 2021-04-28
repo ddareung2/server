@@ -7,17 +7,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.model.AdminItem;
-
 @Service
-public class UserService implements UserDetailsService {
+public class AdminService implements UserDetailsService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private AdminRepository adminRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AdminItem adminItem = userRepository.findAccountByUsername(username);
+        Admin adminItem = adminRepository.findAccountByUsername(username);
         if (adminItem == null) {
             throw new UsernameNotFoundException(username);
         }

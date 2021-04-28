@@ -1,6 +1,5 @@
 package com.ddareung2.server.weather;
 
-import com.ddareung2.server.model.Weather;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
+
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
