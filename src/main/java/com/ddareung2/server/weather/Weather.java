@@ -1,4 +1,4 @@
-package com.ddareung2.server.model;
+package com.ddareung2.server.weather;
 
 import lombok.*;
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.model.AdminItem;
+import com.ddareung2.server.user.Admin;
 
 @Service
 public class JpaTestService {
@@ -15,15 +15,15 @@ public class JpaTestService {
 	@Autowired
 	private JpaTestRepository jpaTestRepository;
 
-	public List<AdminItem> findAll() {
-		List<AdminItem> jpaTest = new ArrayList<>();
+	public List<Admin> findAll() {
+		List<Admin> jpaTest = new ArrayList<>();
 		jpaTestRepository.findAll().forEach(e -> jpaTest.add(e));
 
 		return jpaTest;
 	}
 
-	public Optional<AdminItem> findById(Long id) {
-		Optional<AdminItem> adminItem = jpaTestRepository.findById(id);
+	public Optional<Admin> findById(Long id) {
+		Optional<Admin> adminItem = jpaTestRepository.findById(id);
 		return adminItem;
 	}
 
@@ -31,13 +31,13 @@ public class JpaTestService {
 		jpaTestRepository.deleteById(id);
 	}
 
-	public AdminItem save(AdminItem adminItem) {
+	public Admin save(Admin adminItem) {
 		jpaTestRepository.save(adminItem);
 		return adminItem;
 	}
 
-	public void updateById(Long id, AdminItem adminItem) {
-		Optional<AdminItem> e = jpaTestRepository.findById(id);
+	public void updateById(Long id, Admin adminItem) {
+		Optional<Admin> e = jpaTestRepository.findById(id);
 
 		if (e.isPresent()) {
 			e.get().setUsername(adminItem.getUsername());

@@ -1,4 +1,4 @@
-package com.ddareung2.server.model;
+package com.ddareung2.server.station;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,25 +15,25 @@ public class StationInformation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false, updatable = false, insertable = true)
+	@Column(name = "id", nullable = false, updatable = false)
 	private long id;
 
-	@Column(name = "station_id", nullable = false, updatable = true, insertable = true)
+	@Column(name = "station_id", nullable = false)
 	private String stationId;
 
-	@Column(name = "name", nullable = false, updatable = true, insertable = true)
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "latitude", nullable = false, updatable = true, insertable = true)
+	@Column(name = "latitude", nullable = false)
 	private Double latitude;
 
-	@Column(name = "longitude", nullable = false, updatable = true, insertable = true)
+	@Column(name = "longitude", nullable = false)
 	private Double longitude;
 
-	@Column(name = "total_rack_count", nullable = false, updatable = true, insertable = true)
+	@Column(name = "total_rack_count", nullable = false)
 	private Integer totalRackCount;
 
-	@Column(name = "total_parking_bike_count", nullable = false, updatable = true, insertable = true)
+	@Column(name = "total_parking_bike_count", nullable = false)
 	private Integer totalParkingBikeCount;
 
 	@Builder

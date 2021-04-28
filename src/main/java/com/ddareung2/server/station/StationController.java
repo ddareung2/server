@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import com.ddareung2.server.model.StationInformation;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("stations")
