@@ -1,4 +1,4 @@
-package com.ddareung2.server.admin;
+package com.ddareung2.server.jwtToekn;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,17 +6,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.ddareung2.server.admin.Admin;
+import com.ddareung2.server.admin.AdminRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService implements UserDetailsService {
-
+public class JwtUserDetailsService implements UserDetailsService {
+	
 	private final AdminRepository adminRepository;
-
-    @Override
+	
+	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin adminItem = adminRepository.findAccountByUsername(username);
+		Admin adminItem = adminRepository.findAccountByUsername(username);
         if (adminItem == null) {
             throw new UsernameNotFoundException(username);
         }
@@ -28,4 +31,3 @@ public class AdminService implements UserDetailsService {
                 .build();
     }
 }
-
