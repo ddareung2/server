@@ -1,4 +1,4 @@
-package com.ddareung2.server.model;
+package com.ddareung2.server.voc;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import com.ddareung2.server.admin.Admin;
+import com.ddareung2.server.model.BaseTimeEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,20 +31,20 @@ public class VocAnswer extends BaseTimeEntity {
 	private long id;
 	
 	@OneToOne(fetch = FetchType.LAZY, targetEntity = VocQuestion.class)
-	@JoinColumn(name="question_id", referencedColumnName = "id", nullable = false, updatable = true, insertable = true)
+	@JoinColumn(name="question_id", referencedColumnName = "id", nullable = false)
 	private VocQuestion questionId;
 	
-	@Column(name = "content", nullable = false, updatable = true, insertable = true)
+	@Column(name = "content", nullable = false)
 	private String content;
 	
-	@OneToOne(fetch = FetchType.LAZY, targetEntity = AdminItem.class)
-	@JoinColumn(name="admin_id", referencedColumnName = "id", nullable = false, updatable = true, insertable = true)
-	private AdminItem adminId;
+	@OneToOne(fetch = FetchType.LAZY, targetEntity = Admin.class)
+	@JoinColumn(name="admin_id", referencedColumnName = "id", nullable = false)
+	private Admin adminId;
 	
 	public VocAnswer() {}
 
 	@Builder
-	public VocAnswer(VocQuestion questionId, String content, AdminItem adminId, LocalDateTime createAt) {
+	public VocAnswer(VocQuestion questionId, String content, Admin adminId, LocalDateTime createAt) {
 		this.questionId = questionId;
 		this.content = content;
 		this.adminId = adminId;

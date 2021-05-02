@@ -3,8 +3,6 @@ package com.ddareung2.server.station;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.model.StationInformation;
-
 import java.util.List;
 import java.util.Optional;
 

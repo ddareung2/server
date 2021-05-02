@@ -1,4 +1,4 @@
-package com.ddareung2.server.model;
+package com.ddareung2.server.voc;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +17,9 @@ public class VocCategory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, updatable = false, insertable = false)
 	private long id;
-	@Column(name="name", nullable = false, updatable = false, insertable = true)
+	@Column(name="name", nullable = false, updatable = false)
 	private String name;
-	@Column(name="display_name", nullable = false, updatable = false, insertable = true)
+	@Column(name="display_name", nullable = false, updatable = false)
 	private String displayName;
 	
 	public VocCategory() {}

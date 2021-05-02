@@ -1,23 +1,22 @@
-package com.ddareung2.server.user;
+package com.ddareung2.server.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.model.AdminItem;
+import lombok.RequiredArgsConstructor;
 
 @Service
-public class UserService implements UserDetailsService {
+@RequiredArgsConstructor
+public class AdminService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userRepository;
+	private final AdminRepository adminRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AdminItem adminItem = userRepository.findAccountByUsername(username);
+        Admin adminItem = adminRepository.findAccountByUsername(username);
         if (adminItem == null) {
             throw new UsernameNotFoundException(username);
         }
