@@ -1,6 +1,5 @@
 package com.ddareung2.server.weather;
 
-import com.ddareung2.server.model.Weather;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,7 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping()
-    public ResponseEntity<?> getWeather(Weather weatherParam) {
+    public ResponseEntity<?> getWeather(WeatherParam weatherParam) {
         return weatherService.getWeather(weatherParam);
     }
 }

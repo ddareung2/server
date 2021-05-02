@@ -63,3 +63,7 @@ spring:
           region:
             factoryclass: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
         generatestatistics: true
+
+api:
+  key:
+    weather: 6QhJt2TrTftbPuSc98xTzMCNmpgtgKzi4bpewt0SFwMKQJdbMD8A4AIxH0XWd8%2FTypTiB%2ByVA0TD19qtj8wB4A%3D%3D
