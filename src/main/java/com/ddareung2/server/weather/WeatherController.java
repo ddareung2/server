@@ -14,7 +14,7 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping()
-    public ResponseEntity<?> getWeather(Weather weatherParam) {
+    public ResponseEntity<?> getWeather(WeatherParam weatherParam) {
         return weatherService.getWeather(weatherParam);
     }
 }
