@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface StationRepository extends JpaRepository<StationInformation, Long> {
 
-    Optional<List<StationInformation>> findByNameContaining(String name);
+    Optional<List<StationInformation>> findByStationNameContaining(String stationName);
 }

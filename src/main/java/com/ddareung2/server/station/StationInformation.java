@@ -22,28 +22,32 @@ public class StationInformation {
 	private String stationId;
 
 	@Column(name = "name", nullable = false)
-	private String name;
+	private String stationName;
 
 	@Column(name = "latitude", nullable = false)
-	private Double latitude;
+	private Double stationLatitude;
 
 	@Column(name = "longitude", nullable = false)
-	private Double longitude;
+	private Double stationLongitude;
 
 	@Column(name = "total_rack_count", nullable = false)
-	private Integer totalRackCount;
+	private Integer rackTotCnt;
 
 	@Column(name = "total_parking_bike_count", nullable = false)
-	private Integer totalParkingBikeCount;
+	private Integer parkingBikeTotCnt;
+	
+	@Column(name = "shared", nullable = true, updatable = true, insertable = true)
+	private Integer shared;
 
 	@Builder
-	public StationInformation(String stationId, String name, Double latitude, Double longitude,
-			Integer totalRackCount, Integer totalParkingBikeCount) {
+	public StationInformation(String stationId, String stationName, Double stationLatitude, Double stationLongitude,
+			Integer rackTotCnt, Integer parkingBikeTotCnt, Integer shared) {
 		this.stationId = stationId;
-		this.name = name;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.totalRackCount = totalRackCount;
-		this.totalParkingBikeCount = totalParkingBikeCount;
+		this.stationName = stationName;
+		this.stationLatitude = stationLatitude;
+		this.stationLongitude = stationLongitude;
+		this.rackTotCnt = rackTotCnt;
+		this.parkingBikeTotCnt = parkingBikeTotCnt;
+		this.shared = shared;
 	}
 }
