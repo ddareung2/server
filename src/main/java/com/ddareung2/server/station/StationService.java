@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class StationService {
 
     private final StationRepository stationRepository;
+    private final StationParam stationParam;
 
     public List<StationInformation> findAll() {
         return stationRepository.findAll();
@@ -40,11 +41,11 @@ public class StationService {
         
         ResponseEntity<JSONObject> response = wc.get()
                 .uri(uriBuilder -> uriBuilder
-                		.path("/784e68756e73696c36334f5a426b4a")
-                		.path("/json")
-                		.path("/bikeList")
-                		.path("/1")
-                		.path("/10")
+                		.path("/"+stationParam.getServiceKey())
+                		.path("/"+stationParam.getDataType())
+                		.path("/"+stationParam.getService())
+                		.path("/"+stationParam.getStartIndex())
+                		.path("/"+stationParam.getEndIndex())
                         .build()
                 ).accept(MediaType.APPLICATION_JSON)
                 .retrieve()
