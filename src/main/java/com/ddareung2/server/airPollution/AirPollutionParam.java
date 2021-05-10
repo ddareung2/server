@@ -1,4 +1,4 @@
-package com.ddareung2.server.airPolution;
+package com.ddareung2.server.airPollution;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 public class AirPollutionParam {
     @Value("${api.key.airPollution}")
     private String serviceKey;
-    private final String returnType = "JSON";
+    private final String returnType = "json";
+    private final String dataTerm = "DAILY";
+    private final String ver = "1.3";
     private String stationName;
     private int pageNo;
     private int numOfRows;
