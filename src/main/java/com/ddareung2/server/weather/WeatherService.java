@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class WeatherService {
-    private final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService";
+    private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService";
     private final WeatherParam weather;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
