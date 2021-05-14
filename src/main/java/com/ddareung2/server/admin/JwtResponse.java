@@ -1,4 +1,4 @@
-package com.ddareung2.server.user;
+package com.ddareung2.server.admin;
 
 public class JwtResponse {
     private final String jwttoken;

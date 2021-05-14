@@ -1,4 +1,4 @@
-package com.ddareung2.server.common;
+package com.ddareung2.server.common.model;
 
 import java.time.LocalDateTime;
 

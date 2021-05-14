@@ -1,4 +1,4 @@
-package com.ddareung2.server.user;
+package com.ddareung2.server.admin;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

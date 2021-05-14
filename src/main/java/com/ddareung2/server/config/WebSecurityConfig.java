@@ -15,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.ddareung2.server.user.JwtAuthenticationEntryPoint;
-import com.ddareung2.server.user.JwtRequestFilter;
-import com.ddareung2.server.user.JwtUserDetailsService;
+import com.ddareung2.server.admin.JwtAuthenticationEntryPoint;
+import com.ddareung2.server.admin.JwtRequestFilter;
+import com.ddareung2.server.admin.JwtUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
