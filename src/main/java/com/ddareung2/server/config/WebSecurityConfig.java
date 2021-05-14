@@ -1,4 +1,4 @@
-package com.ddareung2.server;
+package com.ddareung2.server.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.ddareung2.server.jwtToekn.JwtAuthenticationEntryPoint;
-import com.ddareung2.server.jwtToekn.JwtRequestFilter;
-import com.ddareung2.server.jwtToekn.JwtUserDetailsService;
+import com.ddareung2.server.admin.JwtAuthenticationEntryPoint;
+import com.ddareung2.server.admin.JwtRequestFilter;
+import com.ddareung2.server.admin.JwtUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 

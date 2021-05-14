@@ -1,4 +1,4 @@
-package com.ddareung2.server.jwtToekn;
+package com.ddareung2.server.admin;
 
 import java.util.Date;
 import java.util.HashMap;
