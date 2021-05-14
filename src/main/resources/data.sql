@@ -1,4 +1,5 @@
 INSERT INTO admin_role (name, display_name) values ('ADMIN', '관리자');
+INSERT INTO admin_role (name, display_name) values ('ADMIN2', '관리자2');
 
 INSERT INTO admin (username, name, password, role) values ('rb', 'rb', '1234', 'ADMIN');
 INSERT INTO admin (username, name, password, role) values ('tori', 'tori', '1234', 'ADMIN');
