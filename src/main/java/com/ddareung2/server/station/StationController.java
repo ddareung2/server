@@ -3,15 +3,20 @@ package com.ddareung2.server.station;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.reactive.function.client.WebClient;
 
+@EnableScheduling
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("stations")
@@ -30,7 +35,7 @@ public class StationController {
         Optional<List<StationInformation>> stations = stationService.findByStationName(name);
         return new ResponseEntity<>(stations, HttpStatus.OK);
     }
-    
+
     @GetMapping(value = "/save")
     public ResponseEntity<?> saveStations() {
     	List<StationInformation> stations = stationService.getStationList();
@@ -40,4 +45,12 @@ public class StationController {
     	}
     	return new ResponseEntity<StationInformation>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@Scheduled(cron = "0 * * * * *")
+    public void stationsBatch(){
+        List<StationInformation> stations = stationService.getStationList();
+        if(stations != null) {
+            stationService.save(stations);
+        }
+    }
 }
