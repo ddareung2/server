@@ -1,4 +1,4 @@
-package com.ddareung2.server.weather;
+package com.ddareung2.server.weather.temperature;
 
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class WeatherParam {
+public class TemperatureParam {
     @Value("${api.key.weather}")
     private String serviceKey;
     private final String dataType = "JSON";

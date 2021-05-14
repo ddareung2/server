@@ -3,7 +3,6 @@ package com.ddareung2.server.station;
 import java.util.List;
 import java.util.Optional;
 
-import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @EnableScheduling
 @RequiredArgsConstructor
@@ -37,13 +35,13 @@ public class StationController {
     }
 
     @GetMapping(value = "/save")
-    public ResponseEntity<?> saveStations() {
+    public ResponseEntity<StationInformation> saveStations() {
     	List<StationInformation> stations = stationService.getStationList();
     	if(stations != null) {
     		stationService.save(stations);
-    		return new ResponseEntity<StationInformation>(HttpStatus.OK);
+    		return new ResponseEntity<>(HttpStatus.OK);
     	}
-    	return new ResponseEntity<StationInformation>(HttpStatus.INTERNAL_SERVER_ERROR);
+    	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Scheduled(cron = "0 * * * * *")
