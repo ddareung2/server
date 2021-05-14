@@ -1,4 +1,4 @@
-package com.ddareung2.server.airPollution;
+package com.ddareung2.server.weather.finedust;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class AirPollutionParam {
+public class FineDustParam {
     @Value("${api.key.airPollution}")
     private String serviceKey;
     private final String returnType = "json";

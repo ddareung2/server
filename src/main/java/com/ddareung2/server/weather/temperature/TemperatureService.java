@@ -1,30 +1,31 @@
-package com.ddareung2.server.weather;
+package com.ddareung2.server.weather.temperature;
 
-import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.DefaultUriBuilderFactory;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class WeatherService {
+public class TemperatureService {
     private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService";
-    private final WeatherParam weather;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final TemperatureParam weather;
 
-    public ResponseEntity<Object> getWeather(WeatherParam weatherParam) {
+    @SuppressWarnings("unchecked")
+	public ResponseEntity<Object> getWeather(TemperatureParam weatherParam) {
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmm"));
         int tmpTime = Integer.parseInt(currentTime);
@@ -74,16 +75,19 @@ public class WeatherService {
                 .toEntity(JSONObject.class)
                 .block();
 
-        if(response.getStatusCode() == HttpStatus.OK ){
-            HashMap responseData = (HashMap) response.getBody().get("response");
-            HashMap body = (HashMap)responseData.get("body");
-            HashMap items = (HashMap)body.get("items");
-            List<HashMap> itemArray = (List<HashMap>) items.get("item");
-
-            List<WeatherItem> weatherItems = new ArrayList<>();
+        if(response != null && response.getStatusCode() == HttpStatus.OK ){
+        	Map<?, ?> responseData = response.getBody().get("response") != null ?
+            		(Map<?, ?>) response.getBody().get("response") : new HashMap<>();
+            
+            Map<?, ?> body = responseData.get("body") != null ?
+            		(Map<?, ?>)responseData.get("body") : new HashMap<>();
+            
+            HashMap<String, Object> items = (HashMap<String, Object>)body.get("items");
+            List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>) items.get("item");
+            List<TemperatureItem> weatherItems = new ArrayList<>();
 
             for (HashMap<String, String> item : itemArray) {
-                WeatherItem weatherItem = new WeatherItem();
+                TemperatureItem weatherItem = new TemperatureItem();
                 weatherItem.setCategory(item.get("category"));
                 weatherItem.setFcstValue(Double.parseDouble(item.get("fcstValue")));
                 weatherItem.setFcstDate(item.get("fcstDate"));

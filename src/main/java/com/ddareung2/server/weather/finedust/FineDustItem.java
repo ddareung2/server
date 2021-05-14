@@ -1,4 +1,4 @@
-package com.ddareung2.server.airPollution;
+package com.ddareung2.server.weather.finedust;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AirPollutionItem {
+public class FineDustItem {
     private double pm10Value;
     private int pm10Grade;
     private int pm10Grade1h;

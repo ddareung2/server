@@ -1,4 +1,4 @@
-package com.ddareung2.server.weather;
+package com.ddareung2.server.weather.temperature;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeatherItem {
+public class TemperatureItem {
     private String category;
     private double fcstValue;
     private String fcstDate;
