@@ -1,4 +1,4 @@
-package com.ddareung2.server.admin;
+package com.ddareung2.server.user;
 
 import java.io.Serializable;
 

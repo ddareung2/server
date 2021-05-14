@@ -1,4 +1,4 @@
-package com.ddareung2.server.jwtToekn;
+package com.ddareung2.server.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

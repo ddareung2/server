@@ -1,4 +1,4 @@
-package com.ddareung2.server.admin;
+package com.ddareung2.server.user;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.ddareung2.server.model.BaseTimeEntity;
+import com.ddareung2.server.common.BaseTimeEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
