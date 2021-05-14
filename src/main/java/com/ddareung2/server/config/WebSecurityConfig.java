@@ -1,6 +1,5 @@
 package com.ddareung2.server.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,11 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtRequestFilter jwtRequestFilter;
     
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-    }
-    
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -52,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/h2-console/**","/authenticate").permitAll()
                 .antMatchers(
                 		"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**",
-                		"/login").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                		"/login", "/stations/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .cors().and();

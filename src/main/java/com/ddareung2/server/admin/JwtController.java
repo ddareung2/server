@@ -1,5 +1,9 @@
 package com.ddareung2.server.admin;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,15 +27,18 @@ public class JwtController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest,
+    		HttpServletResponse response) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService
             .loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie","accessToken="+token+";Max-Age=30;");
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
 
     private void authenticate(String username, String password) throws Exception {
