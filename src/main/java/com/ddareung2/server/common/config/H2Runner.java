@@ -1,4 +1,4 @@
-package com.ddareung2.server.config;
+package com.ddareung2.server.common.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

@@ -1,4 +1,4 @@
-package com.ddareung2.server.config;
+package com.ddareung2.server.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            	.antMatchers("/h2-console/**","/authenticate").permitAll()
+            	.antMatchers("/h2-console/**","/auth/login").permitAll()
                 .antMatchers(
                 		"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**",
                 		"/login", "/stations/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")

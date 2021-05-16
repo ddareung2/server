@@ -1,4 +1,4 @@
-package com.ddareung2.server.config;
+package com.ddareung2.server.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
