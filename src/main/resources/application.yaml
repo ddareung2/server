@@ -10,7 +10,7 @@ server:
 logging:
   level:
     root: info
-
+#    org.hibernate.type: trace
 spring:
   devtools:
     livereload:
