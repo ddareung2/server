@@ -7,18 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.*;
+import org.hibernate.annotations.SQLInsert;
 
 @Getter
 @NoArgsConstructor
 @Entity(name="station_information")
 public class StationInformation {
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false, updatable = false)
-	private long id;
-
-	@Column(name = "station_id", nullable = false)
+	@Column(name = "station_id", nullable = false, updatable = false)
 	private String stationId;
 
 	@Column(name = "name", nullable = false)

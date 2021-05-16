@@ -1,5 +1,6 @@
 package com.ddareung2.server.station;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,30 +39,35 @@ public class StationService {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
         WebClient wc = WebClient.builder().uriBuilderFactory(factory).baseUrl(BASE_URL).build();
-        
-        ResponseEntity<JSONObject> response = wc.get()
-                .uri(uriBuilder -> uriBuilder
-                		.path("/"+stationParam.getServiceKey())
-                		.path("/"+stationParam.getDataType())
-                		.path("/"+stationParam.getService())
-                		.path("/"+stationParam.getStartIndex())
-                		.path("/"+stationParam.getEndIndex())
-                        .build()
-                ).accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .toEntity(JSONObject.class)
-                .block();
-		
-        if(response.getStatusCode() == HttpStatus.OK ){
-            Map<?, ?> responseData = (Map<?, ?>) response.getBody().get("rentBikeStatus");
-            if(!responseData.get("list_total_count").equals(0) && responseData.get("list_total_count") != null) {
-            	List<?> row = (List<?>) responseData.get("row");
-            	ObjectMapper mapper = new ObjectMapper();
-         	   	List<StationInformation> stations =  mapper.convertValue(row, new TypeReference<List<StationInformation>>() {});
-         	   	return stations;
+        List<StationInformation> row = new ArrayList<>();
+
+        for(int i=1 ; i<=2001 ; i+=1000){
+            stationParam.setStartIndex(i);
+            stationParam.setEndIndex(i+999);
+
+            ResponseEntity<JSONObject> response = wc.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/"+stationParam.getServiceKey())
+                            .path("/"+stationParam.getDataType())
+                            .path("/"+stationParam.getService())
+                            .path("/"+stationParam.getStartIndex())
+                            .path("/"+stationParam.getEndIndex())
+                            .build()
+                    ).accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .toEntity(JSONObject.class)
+                    .block();
+
+            if(response.getStatusCode() == HttpStatus.OK){
+                Map<?, ?> responseData = (Map<?, ?>) response.getBody().get("rentBikeStatus");
+                if(!responseData.get("list_total_count").equals(0) && responseData.get("list_total_count") != null){
+                    List<StationInformation> tmpRow = (List<StationInformation>) responseData.get("row");
+                    row.addAll(tmpRow);
+                }
             }
         }
-        return null;
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(row, new TypeReference<List<StationInformation>>() {});
 	}
     
     public void save(List<StationInformation> stations) {
