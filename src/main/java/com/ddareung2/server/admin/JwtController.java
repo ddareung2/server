@@ -22,16 +22,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtController {
 	
-	private final JwtUserDetailsService jwtUserDetailsService;
+	private final AdminService adminService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest,
-    		HttpServletResponse response) throws Exception {
+    public ResponseEntity<Object> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest,
+    		HttpServletResponse response) throws IllegalArgumentException {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        final UserDetails userDetails = jwtUserDetailsService
+        final UserDetails userDetails = adminService
             .loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
@@ -41,13 +41,13 @@ public class JwtController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) throws IllegalArgumentException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new IllegalArgumentException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new IllegalArgumentException("INVALID_CREDENTIALS", e);
         }
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import com.ddareung2.server.admin.JwtAuthenticationEntryPoint;
 import com.ddareung2.server.admin.JwtRequestFilter;
-import com.ddareung2.server.admin.JwtUserDetailsService;
+import com.ddareung2.server.admin.AdminService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,10 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    private final JwtUserDetailsService jwtUserDetailsService;
-
-    private final JwtRequestFilter jwtRequestFilter;
+	private final JwtRequestFilter jwtRequestFilter;
+	private final AdminService adminService;
     
     @Bean
     @Override
@@ -42,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-//                .antMatchers("/").permitAll()
             	.antMatchers("/h2-console/**","/authenticate").permitAll()
                 .antMatchers(
                 		"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**",
@@ -67,6 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(adminService).passwordEncoder(passwordEncoder());
 	}
 }
