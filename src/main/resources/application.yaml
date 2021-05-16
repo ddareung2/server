@@ -52,7 +52,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
     open-in-view: false
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: create-drop
       naming:
