@@ -3,9 +3,11 @@ package com.ddareung2.server.admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
 	
-	Admin findAccountByUsername(String username);
+	Optional<Admin> findAccountByUsername(String username);
 
 }
