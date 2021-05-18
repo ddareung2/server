@@ -1,4 +1,4 @@
-package com.ddareung2.server.voc;
+package com.ddareung2.server.voc.question;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Proxy;
+
 import com.ddareung2.server.common.model.BaseTimeEntity;
 import com.ddareung2.server.station.StationInformation;
+import com.ddareung2.server.voc.VocCategory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +25,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
+@Proxy(lazy = false)
 @Entity(name="voc_question")
 public class VocQuestion extends BaseTimeEntity {
 	
@@ -31,6 +35,7 @@ public class VocQuestion extends BaseTimeEntity {
 	private long id;
 	
 //	@Column(name = "category", nullable = false, updatable = true, insertable = true)
+//	@OneToOne(fetch = FetchType.LAZY)
 	@OneToOne(fetch = FetchType.LAZY, targetEntity = VocCategory.class)
 	@JoinColumn(name="category", referencedColumnName = "name", nullable = false)
 	private VocCategory category;
@@ -44,7 +49,7 @@ public class VocQuestion extends BaseTimeEntity {
 	@Column(name = "email")
 	private String email;
 	
-	@OneToOne(fetch = FetchType.LAZY, targetEntity = StationInformation.class)
+	@OneToOne(targetEntity = StationInformation.class)
 	@JoinColumn(name="station_id", referencedColumnName = "station_id", nullable = false)
 	private StationInformation stationId;
 	
@@ -65,4 +70,5 @@ public class VocQuestion extends BaseTimeEntity {
 		this.stationId = stationId;
 		this.needReply = needReply;
 	}
+	
 }
