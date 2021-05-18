@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ddareung2.server.weather.WeatherParam;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,16 +22,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class FineDustService {
     private static final String BASE_URL = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc";
-    private final FineDustParam airPollution;
+    private final FineDustParam fineDustParam;
 
     @SuppressWarnings("unchecked")
-	public ResponseEntity<Object> getAirPollutionInfo(FineDustParam airPollutionParam) {
+	public List<FineDustItem> getFineDustInfo(WeatherParam weatherParam) {
+        List<FineDustItem> fineDustItems = new ArrayList<>();
+
         try {
-            airPollutionParam.setPageNo(1);
-            airPollutionParam.setNumOfRows(1);
-            airPollutionParam.setServiceKey(airPollution.getServiceKey());
-            String stationName = URLEncoder.encode(airPollutionParam.getStationName(), "UTF-8");
-            airPollutionParam.setStationName(stationName);
+            fineDustParam.setPageNo(1);
+            fineDustParam.setNumOfRows(1);
+            fineDustParam.setServiceKey(fineDustParam.getServiceKey());
+            String stationName = URLEncoder.encode(weatherParam.getStationName(), "UTF-8");
+            fineDustParam.setStationName(stationName);
 
             DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
             factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
@@ -39,13 +42,13 @@ public class FineDustService {
             ResponseEntity<JSONObject> response = wc.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/getMsrstnAcctoRltmMesureDnsty")
-                            .queryParam("serviceKey", airPollutionParam.getServiceKey())
-                            .queryParam("stationName", airPollutionParam.getStationName())
-                            .queryParam("returnType", airPollutionParam.getReturnType())
-                            .queryParam("pageNo", airPollutionParam.getPageNo())
-                            .queryParam("numOfRows", airPollutionParam.getNumOfRows())
-                            .queryParam("dataTerm", airPollutionParam.getDataTerm())
-                            .queryParam("ver", airPollutionParam.getVer()).build()
+                            .queryParam("serviceKey", fineDustParam.getServiceKey())
+                            .queryParam("stationName", fineDustParam.getStationName())
+                            .queryParam("returnType", fineDustParam.getReturnType())
+                            .queryParam("pageNo", fineDustParam.getPageNo())
+                            .queryParam("numOfRows", fineDustParam.getNumOfRows())
+                            .queryParam("dataTerm", fineDustParam.getDataTerm())
+                            .queryParam("ver", fineDustParam.getVer()).build()
                     ).headers(httpHeaders -> httpHeaders.add("Content-Type", "application/json;charset=UTF-8"))
                     .accept(MediaType.APPLICATION_JSON)
                     .acceptCharset(StandardCharsets.UTF_8)
@@ -63,25 +66,20 @@ public class FineDustService {
                 
                 List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>)body.get("items");
 
-                List<FineDustItem> airPollutionItems = new ArrayList<>();
-
                 for (HashMap<String, String> item : itemArray) {
-                    FineDustItem airPollutionItem = new FineDustItem();
-                    airPollutionItem.setPm10Value(Double.parseDouble(item.get("pm10Value")));
-                    airPollutionItem.setPm10Grade(Integer.parseInt(item.get("pm10Grade")));
-                    airPollutionItem.setPm10Grade1h(Integer.parseInt(item.get("pm10Grade1h")));
-                    airPollutionItem.setPm25Value(Double.parseDouble(item.get("pm25Value")));
-                    airPollutionItem.setPm25Grade(Integer.parseInt(item.get("pm25Grade")));
-                    airPollutionItem.setPm25Grade1h(Integer.parseInt(item.get("pm25Grade1h")));
-                    airPollutionItems.add(airPollutionItem);
+                    FineDustItem fineDustItem = new FineDustItem();
+                    fineDustItem.setPm10Value(Double.parseDouble(item.get("pm10Value")));
+                    fineDustItem.setPm10Grade(Integer.parseInt(item.get("pm10Grade")));
+                    fineDustItem.setPm10Grade1h(Integer.parseInt(item.get("pm10Grade1h")));
+                    fineDustItem.setPm25Value(Double.parseDouble(item.get("pm25Value")));
+                    fineDustItem.setPm25Grade(Integer.parseInt(item.get("pm25Grade")));
+                    fineDustItem.setPm25Grade1h(Integer.parseInt(item.get("pm25Grade1h")));
+                    fineDustItems.add(fineDustItem);
                 }
-                return new ResponseEntity<>(airPollutionItems, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+        return fineDustItems;
     }
 }

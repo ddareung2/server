@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class FineDustParam {
-    @Value("${api.key.airPollution}")
+    @Value("${api.key.fineDust}")
     private String serviceKey;
     private final String returnType = "json";
     private final String dataTerm = "DAILY";
