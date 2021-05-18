@@ -40,10 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            	.antMatchers("/h2-console/**","/auth/login").permitAll()
+	            .antMatchers("/**/**").permitAll()
                 .antMatchers(
-                		"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**",
-                		"/login", "/stations/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                		"/voc/answer/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .cors().and();
