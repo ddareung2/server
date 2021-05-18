@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 
 import com.ddareung2.server.admin.Admin;
 import com.ddareung2.server.common.model.BaseTimeEntity;
+import com.ddareung2.server.voc.question.VocQuestion;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
