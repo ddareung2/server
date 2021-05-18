@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ddareung2.server.weather.WeatherParam;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,10 +23,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class TemperatureService {
     private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService";
-    private final TemperatureParam weather;
+    private final TemperatureParam temperatureParam;
 
     @SuppressWarnings("unchecked")
-	public ResponseEntity<Object> getWeather(TemperatureParam weatherParam) {
+	public List<TemperatureItem> getTemperature(WeatherParam weatherParam) {
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmm"));
         int tmpTime = Integer.parseInt(currentTime);
@@ -49,11 +50,13 @@ public class TemperatureService {
             currentTime = "2000";
         }
 
-        weatherParam.setBaseDate(currentDate);
-        weatherParam.setBaseTime(currentTime);
-        weatherParam.setPageNo(1);
-        weatherParam.setNumOfRows(11);
-        weatherParam.setServiceKey(weather.getServiceKey());
+        temperatureParam.setBaseDate(currentDate);
+        temperatureParam.setBaseTime(currentTime);
+        temperatureParam.setPageNo(1);
+        temperatureParam.setNumOfRows(11);
+        temperatureParam.setServiceKey(temperatureParam.getServiceKey());
+
+        List<TemperatureItem> temperatureItems = new ArrayList<>();
 
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
@@ -62,14 +65,14 @@ public class TemperatureService {
         ResponseEntity<JSONObject> response = wc.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/getVilageFcst")
-                        .queryParam("serviceKey", weatherParam.getServiceKey())
-                        .queryParam("dataType", weatherParam.getDataType())
+                        .queryParam("serviceKey", temperatureParam.getServiceKey())
+                        .queryParam("dataType", temperatureParam.getDataType())
                         .queryParam("nx", weatherParam.getNx())
                         .queryParam("ny", weatherParam.getNy())
-                        .queryParam("pageNo", weatherParam.getPageNo())
-                        .queryParam("numOfRows", weatherParam.getNumOfRows())
-                        .queryParam("base_date", weatherParam.getBaseDate())
-                        .queryParam("base_time", weatherParam.getBaseTime()).build()
+                        .queryParam("pageNo", temperatureParam.getPageNo())
+                        .queryParam("numOfRows", temperatureParam.getNumOfRows())
+                        .queryParam("base_date", temperatureParam.getBaseDate())
+                        .queryParam("base_time", temperatureParam.getBaseTime()).build()
                 ).accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .toEntity(JSONObject.class)
@@ -84,20 +87,19 @@ public class TemperatureService {
             
             HashMap<String, Object> items = (HashMap<String, Object>)body.get("items");
             List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>) items.get("item");
-            List<TemperatureItem> weatherItems = new ArrayList<>();
 
             for (HashMap<String, String> item : itemArray) {
-                TemperatureItem weatherItem = new TemperatureItem();
-                weatherItem.setCategory(item.get("category"));
-                weatherItem.setFcstValue(Double.parseDouble(item.get("fcstValue")));
-                weatherItem.setFcstDate(item.get("fcstDate"));
-                weatherItem.setFcstTime(item.get("fcstTime"));
+                TemperatureItem temperatureItem = new TemperatureItem();
+                temperatureItem.setCategory(item.get("category"));
+                temperatureItem.setFcstValue(Double.parseDouble(item.get("fcstValue")));
+                temperatureItem.setFcstDate(item.get("fcstDate"));
+                temperatureItem.setFcstTime(item.get("fcstTime"));
 
-                weatherItems.add(weatherItem);
+                temperatureItems.add(temperatureItem);
             }
-            return new ResponseEntity<>(weatherItems, HttpStatus.OK);
+            return temperatureItems;
         } else {
-            return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+            return temperatureItems;
         }
     }
 }
