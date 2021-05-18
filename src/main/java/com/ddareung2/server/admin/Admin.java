@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Proxy;
+
 import com.ddareung2.server.common.model.BaseTimeEntity;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
+@Proxy(lazy = false)
 @Entity(name="admin") 
 public class Admin extends BaseTimeEntity {
 

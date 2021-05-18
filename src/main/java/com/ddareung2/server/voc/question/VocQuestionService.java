@@ -22,7 +22,7 @@ public class VocQuestionService {
 		vocQuestionRepository.save(vocQuestionRequest);
 	}
 	
-	public Optional<VocQuestion> findByVocQuestionId(Long id) {
+	public Optional<VocQuestion> findByVocQuestion(Long id) {
 		return vocQuestionRepository.findById(id);
 	}
 	

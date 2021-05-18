@@ -1,4 +1,4 @@
-package com.ddareung2.server.voc;
+package com.ddareung2.server.voc.answer;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Proxy;
 
 import com.ddareung2.server.admin.Admin;
 import com.ddareung2.server.common.model.BaseTimeEntity;
@@ -23,6 +25,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
+@Proxy(lazy = false)
 @Entity(name="voc_answer")
 public class VocAnswer extends BaseTimeEntity {
 	

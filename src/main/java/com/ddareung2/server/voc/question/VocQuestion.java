@@ -58,7 +58,7 @@ public class VocQuestion extends BaseTimeEntity {
 	private int needReply;
 	
 	public VocQuestion() {}
-
+	
 	@Builder
 	public VocQuestion(VocCategory category, String title, String content, String username, String email, StationInformation stationId,
 			int needReply, LocalDateTime createAt) {
