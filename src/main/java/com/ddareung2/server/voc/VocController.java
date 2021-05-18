@@ -7,10 +7,10 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ddareung2.server.voc.answer.VocAnswer;
@@ -42,10 +42,9 @@ public class VocController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/search")
+	@GetMapping(value = "/search/{id}")
 	public Map<String, Object> getVocQuestion(
-			@RequestParam(value = "id") Long id) {
-		
+			@PathVariable(value = "id") Long id) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("QUESTION", vocQuestionService.findByVocQuestion(id));
 		map.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id)));
