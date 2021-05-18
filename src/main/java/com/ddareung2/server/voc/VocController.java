@@ -46,7 +46,7 @@ public class VocController {
 	public Map<String, Object> getVocQuestion(
 			@RequestParam(value = "id") Long id) {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("QUESTION", vocQuestionService.findByVocQuestion(id));
 		map.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id)));
 		return map;
