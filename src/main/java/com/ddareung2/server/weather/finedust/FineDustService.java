@@ -2,12 +2,11 @@ package com.ddareung2.server.weather.finedust;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ddareung2.server.weather.WeatherParam;
+import com.ddareung2.server.weather.dto.request.WeatherRequest;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,14 +24,14 @@ public class FineDustService {
     private final FineDustParam fineDustParam;
 
     @SuppressWarnings("unchecked")
-	public List<FineDustItem> getFineDustInfo(WeatherParam weatherParam) {
-        List<FineDustItem> fineDustItems = new ArrayList<>();
+	public int getFineDustInfo(WeatherRequest weatherRequest) {
+        int fineDust = 0;
 
         try {
             fineDustParam.setPageNo(1);
             fineDustParam.setNumOfRows(1);
             fineDustParam.setServiceKey(fineDustParam.getServiceKey());
-            String stationName = URLEncoder.encode(weatherParam.getStationName(), "UTF-8");
+            String stationName = URLEncoder.encode(weatherRequest.getStationName(), "UTF-8");
             fineDustParam.setStationName(stationName);
 
             DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
@@ -56,30 +55,23 @@ public class FineDustService {
                     .toEntity(JSONObject.class)
                     .block();
 
-            if(response != null && response.getStatusCode() == HttpStatus.OK && response.getBody() != null){
+            if(response != null && response.getStatusCode() == HttpStatus.OK){
                 Map<?, ?> responseData = response.getBody().get("response") != null ?
                 		(Map<?, ?>) response.getBody().get("response") : new HashMap<>();
                 
                 Map<?, ?> body = responseData.get("body") != null ?
                 		(Map<?, ?>)responseData.get("body") : new HashMap<>();
-                
-                
+
                 List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>)body.get("items");
 
                 for (HashMap<String, String> item : itemArray) {
-                    FineDustItem fineDustItem = new FineDustItem();
-                    fineDustItem.setPm10Value(Double.parseDouble(item.get("pm10Value")));
-                    fineDustItem.setPm10Grade(Integer.parseInt(item.get("pm10Grade")));
-                    fineDustItem.setPm10Grade1h(Integer.parseInt(item.get("pm10Grade1h")));
-                    fineDustItem.setPm25Value(Double.parseDouble(item.get("pm25Value")));
-                    fineDustItem.setPm25Grade(Integer.parseInt(item.get("pm25Grade")));
-                    fineDustItem.setPm25Grade1h(Integer.parseInt(item.get("pm25Grade1h")));
-                    fineDustItems.add(fineDustItem);
+                    fineDust = Integer.parseInt(item.get("khaiValue"));
                 }
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return fineDustItems;
+
+        return fineDust;
     }
 }

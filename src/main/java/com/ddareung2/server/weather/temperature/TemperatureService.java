@@ -3,12 +3,11 @@ package com.ddareung2.server.weather.temperature;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ddareung2.server.weather.WeatherParam;
+import com.ddareung2.server.weather.dto.request.WeatherRequest;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +25,7 @@ public class TemperatureService {
     private final TemperatureParam temperatureParam;
 
     @SuppressWarnings("unchecked")
-	public List<TemperatureItem> getTemperature(WeatherParam weatherParam) {
+	public JSONObject getTemperature(WeatherRequest weatherRequest) {
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmm"));
         int tmpTime = Integer.parseInt(currentTime);
@@ -53,13 +52,14 @@ public class TemperatureService {
         temperatureParam.setBaseDate(currentDate);
         temperatureParam.setBaseTime(currentTime);
         temperatureParam.setPageNo(1);
-        temperatureParam.setNumOfRows(11);
+        temperatureParam.setNumOfRows(10);
         temperatureParam.setServiceKey(temperatureParam.getServiceKey());
 
-        List<TemperatureItem> temperatureItems = new ArrayList<>();
+        JSONObject temperature = new JSONObject();
 
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+
         WebClient wc = WebClient.builder().uriBuilderFactory(factory).baseUrl(BASE_URL).build();
 
         ResponseEntity<JSONObject> response = wc.get()
@@ -67,8 +67,8 @@ public class TemperatureService {
                         .path("/getVilageFcst")
                         .queryParam("serviceKey", temperatureParam.getServiceKey())
                         .queryParam("dataType", temperatureParam.getDataType())
-                        .queryParam("nx", weatherParam.getNx())
-                        .queryParam("ny", weatherParam.getNy())
+                        .queryParam("nx", weatherRequest.getNx())
+                        .queryParam("ny", weatherRequest.getNy())
                         .queryParam("pageNo", temperatureParam.getPageNo())
                         .queryParam("numOfRows", temperatureParam.getNumOfRows())
                         .queryParam("base_date", temperatureParam.getBaseDate())
@@ -79,9 +79,9 @@ public class TemperatureService {
                 .block();
 
         if(response != null && response.getStatusCode() == HttpStatus.OK ){
-        	Map<?, ?> responseData = response.getBody().get("response") != null ?
+            Map<?, ?> responseData = response.getBody().get("response") != null ?
             		(Map<?, ?>) response.getBody().get("response") : new HashMap<>();
-            
+
             Map<?, ?> body = responseData.get("body") != null ?
             		(Map<?, ?>)responseData.get("body") : new HashMap<>();
             
@@ -89,17 +89,15 @@ public class TemperatureService {
             List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>) items.get("item");
 
             for (HashMap<String, String> item : itemArray) {
-                TemperatureItem temperatureItem = new TemperatureItem();
-                temperatureItem.setCategory(item.get("category"));
-                temperatureItem.setFcstValue(Double.parseDouble(item.get("fcstValue")));
-                temperatureItem.setFcstDate(item.get("fcstDate"));
-                temperatureItem.setFcstTime(item.get("fcstTime"));
-
-                temperatureItems.add(temperatureItem);
+                if(item.get("category").equals("POP")) {
+                    temperature.put("precipitation", Integer.parseInt(item.get("fcstValue")));
+                }
+                if(item.get("category").equals("T3H")) {
+                    temperature.put("temperature", Integer.parseInt(item.get("fcstValue")));
+                }
             }
-            return temperatureItems;
-        } else {
-            return temperatureItems;
         }
+
+        return temperature;
     }
 }
