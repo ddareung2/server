@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ddareung2.server.weather.dto.request.WeatherRequest;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+
+import com.ddareung2.server.weather.dto.request.WeatherRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,9 +25,63 @@ public class TemperatureService {
     private static final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService";
     private final TemperatureParam temperatureParam;
 
-    @SuppressWarnings("unchecked")
 	public JSONObject getTemperature(WeatherRequest weatherRequest) {
-        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        setTemperatureParam(weatherRequest);
+        ResponseEntity<JSONObject> response = getResponse(temperatureParam);
+        if(response != null && response.getStatusCode() == HttpStatus.OK && response.hasBody()) {
+        	return parsingResponse(response);
+        }
+        return new JSONObject();
+    }
+    
+    private ResponseEntity<JSONObject> getResponse(TemperatureParam temperatureParam) {
+    	 DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
+         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+
+         WebClient wc = WebClient.builder().uriBuilderFactory(factory).baseUrl(BASE_URL).build();
+
+         return wc.get()
+                 .uri(uriBuilder -> uriBuilder
+                         .path("/getVilageFcst")
+                         .queryParam("serviceKey", temperatureParam.getServiceKey())
+                         .queryParam("dataType", temperatureParam.getDataType())
+                         .queryParam("nx", temperatureParam.getNx())
+                         .queryParam("ny", temperatureParam.getNy())
+                         .queryParam("pageNo", temperatureParam.getPageNo())
+                         .queryParam("numOfRows", temperatureParam.getNumOfRows())
+                         .queryParam("base_date", temperatureParam.getBaseDate())
+                         .queryParam("base_time", temperatureParam.getBaseTime()).build()
+                 ).accept(MediaType.APPLICATION_JSON)
+                 .retrieve()
+                 .toEntity(JSONObject.class)
+                 .block();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private JSONObject parsingResponse(ResponseEntity<JSONObject> response) {
+    	 Map<?, ?> responseData = response.getBody().get("response") != null ?
+         		(Map<?, ?>) response.getBody().get("response") : new HashMap<>();
+
+         Map<?, ?> body = responseData.get("body") != null ?
+         		(Map<?, ?>)responseData.get("body") : new HashMap<>();
+         JSONObject temperature = new JSONObject();
+         if(!body.isEmpty()) {
+	            HashMap<String, Object> items = (HashMap<String, Object>)body.get("items");
+	            List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>) items.get("item");
+	            for (HashMap<String, String> item : itemArray) {
+	                if(item.get("category").equals("POP")) {
+	                    temperature.put("precipitation", Integer.parseInt(item.get("fcstValue")));
+	                }
+	                if(item.get("category").equals("T3H")) {
+	                    temperature.put("temperature", Integer.parseInt(item.get("fcstValue")));
+	                }
+	            }
+         }
+         return temperature;
+    }
+    
+    private void setTemperatureParam(WeatherRequest weatherRequest) {
+    	String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmm"));
         int tmpTime = Integer.parseInt(currentTime);
         
@@ -54,51 +109,7 @@ public class TemperatureService {
         temperatureParam.setPageNo(1);
         temperatureParam.setNumOfRows(10);
         temperatureParam.setServiceKey(temperatureParam.getServiceKey());
-
-        JSONObject temperature = new JSONObject();
-
-        DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(BASE_URL);
-        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-
-        WebClient wc = WebClient.builder().uriBuilderFactory(factory).baseUrl(BASE_URL).build();
-
-        ResponseEntity<JSONObject> response = wc.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/getVilageFcst")
-                        .queryParam("serviceKey", temperatureParam.getServiceKey())
-                        .queryParam("dataType", temperatureParam.getDataType())
-                        .queryParam("nx", weatherRequest.getNx())
-                        .queryParam("ny", weatherRequest.getNy())
-                        .queryParam("pageNo", temperatureParam.getPageNo())
-                        .queryParam("numOfRows", temperatureParam.getNumOfRows())
-                        .queryParam("base_date", temperatureParam.getBaseDate())
-                        .queryParam("base_time", temperatureParam.getBaseTime()).build()
-                ).accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .toEntity(JSONObject.class)
-                .block();
-
-        if(response != null && response.getStatusCode() == HttpStatus.OK ){
-            Map<?, ?> responseData = response.getBody().get("response") != null ?
-            		(Map<?, ?>) response.getBody().get("response") : new HashMap<>();
-            Map<?, ?> body = responseData.get("body") != null ?
-            		(Map<?, ?>)responseData.get("body") : new HashMap<>();
-            
-            if(!body.isEmpty()) {
-	            HashMap<String, Object> items = (HashMap<String, Object>)body.get("items");
-	            List<HashMap<String, String>> itemArray = (List<HashMap<String, String>>) items.get("item");
-	
-	            for (HashMap<String, String> item : itemArray) {
-	                if(item.get("category").equals("POP")) {
-	                    temperature.put("precipitation", Integer.parseInt(item.get("fcstValue")));
-	                }
-	                if(item.get("category").equals("T3H")) {
-	                    temperature.put("temperature", Integer.parseInt(item.get("fcstValue")));
-	                }
-	            }
-            }
-        }
-
-        return temperature;
+        temperatureParam.setNx(weatherRequest.getNx());
+        temperatureParam.setNy(weatherRequest.getNy());
     }
 }
