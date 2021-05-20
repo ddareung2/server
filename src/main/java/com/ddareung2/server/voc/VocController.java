@@ -1,8 +1,6 @@
 package com.ddareung2.server.voc;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +15,7 @@ import com.ddareung2.server.voc.answer.VocAnswer;
 import com.ddareung2.server.voc.answer.VocAnswerService;
 import com.ddareung2.server.voc.dto.request.VocAnswerRequest;
 import com.ddareung2.server.voc.dto.request.VocQuestionRequest;
+import com.ddareung2.server.voc.dto.response.VocResponse;
 import com.ddareung2.server.voc.question.VocQuestion;
 import com.ddareung2.server.voc.question.VocQuestionService;
 
@@ -43,12 +42,12 @@ public class VocController {
 	}
 	
 	@GetMapping(value = "/search/{id}")
-	public Map<String, Object> getVocQuestion(
+	public ResponseEntity<VocResponse> getVocQuestion(
 			@PathVariable(value = "id") Long id) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("QUESTION", vocQuestionService.findByVocQuestion(id));
-		map.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id)));
-		return map;
+		VocResponse vocResponse = new VocResponse();
+		vocResponse.setVocQuestion(vocQuestionService.findByVocQuestion(id));
+		vocResponse.setVocAnswer(vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id)));
+		return new ResponseEntity<>(vocResponse, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/answer")
