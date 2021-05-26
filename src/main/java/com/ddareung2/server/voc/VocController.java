@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ddareung2.server.voc.answer.VocAnswer;
 import com.ddareung2.server.voc.answer.VocAnswerService;
-import com.ddareung2.server.voc.entity.VocAnswerEntity;
-import com.ddareung2.server.voc.entity.VocQuestionEntity;
-import com.ddareung2.server.voc.question.VocQuestion;
+import com.ddareung2.server.voc.dto.request.VocAnswerRequest;
+import com.ddareung2.server.voc.dto.request.VocQuestionRequest;
+import com.ddareung2.server.voc.dto.response.VocAnswerResponse;
+import com.ddareung2.server.voc.dto.response.VocQuestionResponse;
 import com.ddareung2.server.voc.question.VocQuestionService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,14 +32,14 @@ public class VocController {
 	private final VocAnswerService vocAnswerService;
 	
 	@GetMapping()
-	public List<VocQuestion> getVocQuestions() {
+	public List<VocQuestionResponse> getVocQuestions() {
 		return vocQuestionService.findAll();
 	}
 	
 	@PostMapping()
-	public ResponseEntity<VocQuestion> saveVocQuestion(
-			@RequestBody VocQuestionEntity vocQuestionEntity) {
-		vocQuestionService.save(vocQuestionEntity);
+	public ResponseEntity<VocQuestionResponse> saveVocQuestion(
+			@RequestBody VocQuestionRequest vocQuestionRequest) {
+		vocQuestionService.save(vocQuestionRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -46,21 +47,22 @@ public class VocController {
 	public ResponseEntity<Map<String, Object>> getVocQuestion(
 			@PathVariable(value = "id") Long id) {
 		Map<String, Object> voc = new HashMap<>();
-		voc.put("QUESTION", vocQuestionService.findByVocQuestion(id));
-		voc.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id).get()));
+		VocQuestionResponse question = vocQuestionService.findByVocQuestion(id);
+		voc.put("QUESTION", question);
+		if(question != null) {
+			VocAnswerResponse answer =  vocAnswerService.findByVocAnswer(question.getId());
+			if(answer != null) {
+				voc.put("ANSWER", answer);
+			}
+		}
 		
 		return new ResponseEntity<>(voc, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/answer")
-	public List<VocAnswer> getVocAnswers() {
-		return vocAnswerService.findAll();
-	}
-	
 	@PostMapping(value = "/answer")
 	public ResponseEntity<VocAnswer> saveVocAnswer(
-			@RequestBody VocAnswerEntity vocAnswerEntity) {
-		vocAnswerService.save(vocAnswerEntity);
+			@RequestBody VocAnswerRequest vocAnswerRequest) {
+		vocAnswerService.save(vocAnswerRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

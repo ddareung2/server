@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ddareung2.server.voc.entity.VocQuestionEntity;
 
 @Repository
-public interface VocQuestionRepository extends JpaRepository<VocQuestion, Long> {
-	void save(VocQuestionEntity vocQuestionEntity);
+public interface VocQuestionRepository extends JpaRepository<VocQuestionEntity, Long> {
+	void save(VocQuestion vocQuestion);
 }
