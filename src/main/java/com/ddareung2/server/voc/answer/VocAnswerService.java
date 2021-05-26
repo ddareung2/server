@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.voc.dto.request.VocAnswerRequest;
+import com.ddareung2.server.voc.entity.VocAnswerEntity;
 import com.ddareung2.server.voc.question.VocQuestion;
 import com.ddareung2.server.voc.question.VocQuestionRepository;
 
@@ -24,10 +24,10 @@ public class VocAnswerService {
 		return vocAnswerRepository.findAll();
 	}
 	
-	public void save(VocAnswerRequest vocAnswerRequest) {
-		vocAnswerRepository.save(vocAnswerRequest);
+	public void save(VocAnswerEntity vocAnswerEntity) {
+		vocAnswerRepository.save(vocAnswerEntity);
 		
-		Optional<VocQuestion> question = vocQuestionRepository.findById(vocAnswerRequest.getQuestion_id());
+		Optional<VocQuestion> question = vocQuestionRepository.findById(vocAnswerEntity.getQuestionId());
 		if(question.isPresent()) {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(question.get().getEmail());
@@ -38,7 +38,7 @@ public class VocAnswerService {
 				
 	}
 	
-	public Optional<List<VocAnswer>> findByVocAnswer(Optional<VocQuestion> vocQuestion) {
+	public Optional<List<VocAnswer>> findByVocAnswer(VocQuestion vocQuestion) {
 		return vocAnswerRepository.findByQuestionId(vocQuestion);
 	}
 }

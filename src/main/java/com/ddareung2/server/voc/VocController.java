@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ddareung2.server.voc.answer.VocAnswer;
 import com.ddareung2.server.voc.answer.VocAnswerService;
-import com.ddareung2.server.voc.dto.request.VocAnswerRequest;
-import com.ddareung2.server.voc.dto.request.VocQuestionRequest;
+import com.ddareung2.server.voc.entity.VocAnswerEntity;
+import com.ddareung2.server.voc.entity.VocQuestionEntity;
 import com.ddareung2.server.voc.question.VocQuestion;
 import com.ddareung2.server.voc.question.VocQuestionService;
 
@@ -37,18 +37,19 @@ public class VocController {
 	
 	@PostMapping()
 	public ResponseEntity<VocQuestion> saveVocQuestion(
-			@RequestBody VocQuestionRequest vocQuestionRequest) {
-		vocQuestionService.save(vocQuestionRequest);
+			@RequestBody VocQuestionEntity vocQuestionEntity) {
+		vocQuestionService.save(vocQuestionEntity);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/search/{id}")
-	public Map<String, Object> getVocQuestion(
+	public ResponseEntity<Map<String, Object>> getVocQuestion(
 			@PathVariable(value = "id") Long id) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("QUESTION", vocQuestionService.findByVocQuestion(id));
-		map.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id)));
-		return map;
+		Map<String, Object> voc = new HashMap<>();
+		voc.put("QUESTION", vocQuestionService.findByVocQuestion(id));
+		voc.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id).get()));
+		
+		return new ResponseEntity<>(voc, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/answer")
@@ -58,8 +59,8 @@ public class VocController {
 	
 	@PostMapping(value = "/answer")
 	public ResponseEntity<VocAnswer> saveVocAnswer(
-			@RequestBody VocAnswerRequest vocAnswerRequest) {
-		vocAnswerService.save(vocAnswerRequest);
+			@RequestBody VocAnswerEntity vocAnswerEntity) {
+		vocAnswerService.save(vocAnswerEntity);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

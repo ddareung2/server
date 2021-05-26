@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.ddareung2.server.voc.dto.request.VocQuestionRequest;
+import com.ddareung2.server.voc.entity.VocQuestionEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,8 +18,8 @@ public class VocQuestionService {
 		return vocQuestionRepository.findAll();
 	}
 	
-	public void save(VocQuestionRequest vocQuestionRequest) {
-		vocQuestionRepository.save(vocQuestionRequest);
+	public void save(VocQuestionEntity vocQuestionEntity) {
+		vocQuestionRepository.save(vocQuestionEntity);
 	}
 	
 	public Optional<VocQuestion> findByVocQuestion(Long id) {
