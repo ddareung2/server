@@ -50,7 +50,7 @@ public class VocController {
 		VocQuestionResponse question = vocQuestionService.findVocQuestionById(id);
 		voc.put("question", question);
 		if(question != null) {
-			VocAnswerResponse answer =  vocAnswerService.findVocAnswerByVocQuestionId(question.getId());
+			VocAnswerResponse answer =  vocAnswerService.findVocAnswerByQuestionId(question.getId());
 			if(answer != null) {
 				voc.put("answer", answer);
 			}
@@ -65,6 +65,5 @@ public class VocController {
 		vocAnswerService.save(vocAnswerRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
 	
 }

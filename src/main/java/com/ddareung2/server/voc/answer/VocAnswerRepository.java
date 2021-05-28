@@ -9,6 +9,6 @@ import com.ddareung2.server.voc.entity.VocAnswerEntity;
 
 @Repository
 public interface VocAnswerRepository extends JpaRepository<VocAnswerEntity, Long>{
-	Optional<VocAnswerEntity> findVocAnswerByVocQuestionId(long questionId);
+	Optional<VocAnswerEntity> findVocAnswerByQuestionId(long questionId);
 	void save(VocAnswer entity);
 }
