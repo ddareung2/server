@@ -34,16 +34,6 @@ public class StationController {
         return new ResponseEntity<>(stations, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/save")
-    public ResponseEntity<StationInformation> saveStations() {
-    	List<StationInformation> stations = stationService.getStationList();
-    	if(stations != null) {
-    		stationService.save(stations);
-    		return new ResponseEntity<>(HttpStatus.OK);
-    	}
-    	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 	@Scheduled(fixedDelay = 210000)
     public void stationsBatch() {
         List<StationInformation> stations = stationService.getStationList();
