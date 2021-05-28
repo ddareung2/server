@@ -36,11 +36,11 @@ public class VocAnswerService {
 				
 	}
 	
-	public VocAnswerResponse findByVocAnswer(Long id) {
+	public VocAnswerResponse findVocAnswerById(Long id) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		Optional<VocAnswerEntity> answer = vocAnswerRepository.findByQuestionId(id);
+		Optional<VocAnswerEntity> answer = vocAnswerRepository.findVocAnswerByVocQuestionId(id);
 		if(answer.isPresent()) {
 			return modelMapper.map(answer.get(), VocAnswerResponse.class);
 		}
