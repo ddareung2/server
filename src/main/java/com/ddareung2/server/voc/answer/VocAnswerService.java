@@ -40,7 +40,7 @@ public class VocAnswerService {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		Optional<VocAnswerEntity> answer = vocAnswerRepository.findVocAnswerByVocQuestionId(id);
+		Optional<VocAnswerEntity> answer = vocAnswerRepository.findVocAnswerByQuestionId(id);
 		if(answer.isPresent()) {
 			return modelMapper.map(answer.get(), VocAnswerResponse.class);
 		}
