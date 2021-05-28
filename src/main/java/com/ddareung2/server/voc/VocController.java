@@ -50,7 +50,7 @@ public class VocController {
 		VocQuestionResponse question = vocQuestionService.findVocQuestionById(id);
 		voc.put("question", question);
 		if(question != null) {
-			VocAnswerResponse answer =  vocAnswerService.findVocAnswerById(question.getId());
+			VocAnswerResponse answer =  vocAnswerService.findVocAnswerByVocQuestionId(question.getId());
 			if(answer != null) {
 				voc.put("answer", answer);
 			}
