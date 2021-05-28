@@ -34,7 +34,7 @@ public class VocQuestionService {
 		vocQuestionRepository.save(vocQuestionRequest.toEntity());
 	}
 	
-	public VocQuestionResponse findByVocQuestion(Long id) {
+	public VocQuestionResponse findVocQuestionById(Long id) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
