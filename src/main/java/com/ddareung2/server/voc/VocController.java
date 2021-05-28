@@ -32,27 +32,27 @@ public class VocController {
 	private final VocAnswerService vocAnswerService;
 	
 	@GetMapping()
-	public List<VocQuestionResponse> getVocQuestions() {
-		return vocQuestionService.findAll();
+	public ResponseEntity<List<VocQuestionResponse>> getVocQuestions() {
+		return new ResponseEntity<>(vocQuestionService.findAll(), HttpStatus.OK);
 	}
 	
 	@PostMapping()
 	public ResponseEntity<VocQuestionResponse> saveVocQuestion(
 			@RequestBody VocQuestionRequest vocQuestionRequest) {
 		vocQuestionService.save(vocQuestionRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value = "/search/{id}")
 	public ResponseEntity<Map<String, Object>> getVocQuestion(
 			@PathVariable(value = "id") Long id) {
 		Map<String, Object> voc = new HashMap<>();
-		VocQuestionResponse question = vocQuestionService.findByVocQuestion(id);
-		voc.put("QUESTION", question);
+		VocQuestionResponse question = vocQuestionService.findVocQuestionById(id);
+		voc.put("question", question);
 		if(question != null) {
-			VocAnswerResponse answer =  vocAnswerService.findByVocAnswer(question.getId());
+			VocAnswerResponse answer =  vocAnswerService.findVocAnswerById(question.getId());
 			if(answer != null) {
-				voc.put("ANSWER", answer);
+				voc.put("answer", answer);
 			}
 		}
 		
@@ -63,7 +63,7 @@ public class VocController {
 	public ResponseEntity<VocAnswer> saveVocAnswer(
 			@RequestBody VocAnswerRequest vocAnswerRequest) {
 		vocAnswerService.save(vocAnswerRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	
