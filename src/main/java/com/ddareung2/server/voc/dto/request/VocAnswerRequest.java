@@ -1,32 +1,25 @@
 package com.ddareung2.server.voc.dto.request;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.Table;
-
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import com.ddareung2.server.common.model.BaseTimeEntity;
+import com.ddareung2.server.admin.Admin;
+import com.ddareung2.server.voc.answer.VocAnswer;
+import com.ddareung2.server.voc.question.VocQuestion;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@EnableJpaRepositories
-@Entity
 @NoArgsConstructor
-@Inheritance
-@Table(name="voc_answer")
-public class VocAnswerRequest extends BaseTimeEntity {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class VocAnswerRequest {
 	private long id;
-	private long question_id;
+	private VocQuestion questionId;
 	private String content;
-	private long admin_id;
+	private Admin adminId;
 	
+	public VocAnswer toEntity() {
+		return VocAnswer.builder()
+				.questionId(questionId)
+				.content(content)
+				.adminId(adminId)
+				.build();
+	}
 }

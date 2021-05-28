@@ -17,7 +17,8 @@ import com.ddareung2.server.voc.answer.VocAnswer;
 import com.ddareung2.server.voc.answer.VocAnswerService;
 import com.ddareung2.server.voc.dto.request.VocAnswerRequest;
 import com.ddareung2.server.voc.dto.request.VocQuestionRequest;
-import com.ddareung2.server.voc.question.VocQuestion;
+import com.ddareung2.server.voc.dto.response.VocAnswerResponse;
+import com.ddareung2.server.voc.dto.response.VocQuestionResponse;
 import com.ddareung2.server.voc.question.VocQuestionService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,36 +32,38 @@ public class VocController {
 	private final VocAnswerService vocAnswerService;
 	
 	@GetMapping()
-	public List<VocQuestion> getVocQuestions() {
-		return vocQuestionService.findAll();
+	public ResponseEntity<List<VocQuestionResponse>> getVocQuestions() {
+		return new ResponseEntity<>(vocQuestionService.findAll(), HttpStatus.OK);
 	}
 	
 	@PostMapping()
-	public ResponseEntity<VocQuestion> saveVocQuestion(
+	public ResponseEntity<VocQuestionResponse> saveVocQuestion(
 			@RequestBody VocQuestionRequest vocQuestionRequest) {
 		vocQuestionService.save(vocQuestionRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value = "/search/{id}")
-	public Map<String, Object> getVocQuestion(
+	public ResponseEntity<Map<String, Object>> getVocQuestion(
 			@PathVariable(value = "id") Long id) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("QUESTION", vocQuestionService.findByVocQuestion(id));
-		map.put("ANSWER", vocAnswerService.findByVocAnswer(vocQuestionService.findByVocQuestion(id)));
-		return map;
-	}
-	
-	@GetMapping(value = "/answer")
-	public List<VocAnswer> getVocAnswers() {
-		return vocAnswerService.findAll();
+		Map<String, Object> voc = new HashMap<>();
+		VocQuestionResponse question = vocQuestionService.findVocQuestionById(id);
+		voc.put("question", question);
+		if(question != null) {
+			VocAnswerResponse answer =  vocAnswerService.findVocAnswerByVocQuestionId(question.getId());
+			if(answer != null) {
+				voc.put("answer", answer);
+			}
+		}
+		
+		return new ResponseEntity<>(voc, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/answer")
 	public ResponseEntity<VocAnswer> saveVocAnswer(
 			@RequestBody VocAnswerRequest vocAnswerRequest) {
 		vocAnswerService.save(vocAnswerRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	
