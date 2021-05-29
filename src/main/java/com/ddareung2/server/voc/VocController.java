@@ -66,4 +66,9 @@ public class VocController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
+	@GetMapping(value = "/questions")
+	public ResponseEntity<List<VocQuestionResponse>> getVocQuestionsTop10() {
+		return new ResponseEntity<>(vocQuestionService.getVocQuestionsTop10(), HttpStatus.OK);
+	}
+	
 }

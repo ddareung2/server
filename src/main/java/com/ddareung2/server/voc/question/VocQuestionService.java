@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class VocQuestionService {
 	private final VocQuestionRepository vocQuestionRepository;
+	private final ModelMapper modelMapper;
 	
 	public List<VocQuestionResponse> findAll() {
-		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		List<VocQuestionEntity> questions = vocQuestionRepository.findAll();
 		List<VocQuestionResponse> result = new ArrayList<>();
@@ -35,7 +35,6 @@ public class VocQuestionService {
 	}
 	
 	public VocQuestionResponse findVocQuestionById(Long id) {
-		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
 		Optional<VocQuestionEntity> question = vocQuestionRepository.findById(id);
@@ -43,6 +42,15 @@ public class VocQuestionService {
 			return modelMapper.map(question.get(), VocQuestionResponse.class);
 		}
 		return null;
+	}
+	
+	public List<VocQuestionResponse> getVocQuestionsTop10() {
+		List<VocQuestionEntity> questions = vocQuestionRepository.findTop10ByOrderByCreatedAtDesc();
+		List<VocQuestionResponse> result = new ArrayList<>();
+		for(VocQuestionEntity question : questions) {
+			result.add(modelMapper.map(question, VocQuestionResponse.class));
+		}
+		return result;
 	}
 	
 }
