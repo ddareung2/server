@@ -36,7 +36,7 @@ public class VocAnswerService {
 				
 	}
 	
-	public VocAnswerResponse findVocAnswerByVocQuestionId(Long id) {
+	public VocAnswerResponse findVocAnswerByQuestionId(Long id) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
