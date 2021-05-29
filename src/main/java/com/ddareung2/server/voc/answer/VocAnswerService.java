@@ -1,5 +1,7 @@
 package com.ddareung2.server.voc.answer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -22,6 +24,7 @@ public class VocAnswerService {
 	private final VocAnswerRepository vocAnswerRepository;
 	private final VocQuestionRepository vocQuestionRepository;
 	private final JavaMailSender mailSender;
+	private final ModelMapper modelMapper;
 	
 	public void save(VocAnswerRequest vocAnswerRequest) {
 		vocAnswerRepository.save(vocAnswerRequest.toEntity());
@@ -37,7 +40,6 @@ public class VocAnswerService {
 	}
 	
 	public VocAnswerResponse findVocAnswerByQuestionId(Long id) {
-		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
 		Optional<VocAnswerEntity> answer = vocAnswerRepository.findVocAnswerByQuestionId(id);
@@ -45,5 +47,14 @@ public class VocAnswerService {
 			return modelMapper.map(answer.get(), VocAnswerResponse.class);
 		}
 		return null;
+	}
+	
+	public List<VocAnswerResponse> getVocAnswersTop10() {
+		List<VocAnswerEntity> answers = vocAnswerRepository.findTop10ByOrderByCreatedAtDesc();
+		List<VocAnswerResponse> result = new ArrayList<>();
+		for(VocAnswerEntity answer : answers) {
+			result.add(modelMapper.map(answer, VocAnswerResponse.class));
+		}
+		return result;
 	}
 }

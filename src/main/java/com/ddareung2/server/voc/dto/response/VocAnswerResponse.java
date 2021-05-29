@@ -1,5 +1,7 @@
 package com.ddareung2.server.voc.dto.response;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -13,4 +15,5 @@ public class VocAnswerResponse {
 	@NotNull private long questionId;
 	@NotBlank private String content;
 	@NotNull private long adminId;
+	@NotNull private LocalDateTime createdAt;
 }
