@@ -1,5 +1,6 @@
 package com.ddareung2.server.voc.answer;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,5 @@ import com.ddareung2.server.voc.entity.VocAnswerEntity;
 public interface VocAnswerRepository extends JpaRepository<VocAnswerEntity, Long>{
 	Optional<VocAnswerEntity> findVocAnswerByQuestionId(long questionId);
 	void save(VocAnswer entity);
+	List<VocAnswerEntity> findTop10ByOrderByCreatedAtDesc();
 }
